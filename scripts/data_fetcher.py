@@ -5,7 +5,6 @@ import platform
 import random
 import re
 import sqlite3
-import subprocess
 import time
 from datetime import datetime
 
@@ -25,7 +24,6 @@ from selenium.webdriver.firefox.service import Service as FirefoxService
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from sensor_updator import SensorUpdator
-from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
 
 
@@ -215,7 +213,7 @@ class DataFetcher:
             firefox_options.add_argument("--no-sandbox")
             firefox_options.add_argument("--disable-gpu")
             firefox_options.add_argument("--disable-dev-shm-usage")
-            logging.info(f"Open Firefox.\r")
+            logging.info("Open Firefox.\r")
             driver = webdriver.Firefox(
                 options=firefox_options, service=FirefoxService("/usr/bin/geckodriver")
             )
@@ -297,7 +295,7 @@ class DataFetcher:
                 im_info = driver.execute_script(background_JS)
                 background = im_info.split(",")[1]
                 background_image = base64_to_PLI(background)
-                logging.info(f"Get electricity canvas image successfully.\r")
+                logging.info("Get electricity canvas image successfully.\r")
                 distance = self.onnx.get_distance(background_image)
                 logging.info(f"Image CaptCHA distance is {distance}.\r")
 
@@ -306,7 +304,7 @@ class DataFetcher:
                 if driver.current_url == LOGIN_URL:  # if login not success
                     try:
                         logging.info(
-                            f"Sliding CAPTCHA recognition failed and reloaded.\r"
+                            "Sliding CAPTCHA recognition failed and reloaded.\r"
                         )
                         self._click_button(
                             driver, By.CLASS_NAME, "el-button.el-button--primary"
@@ -320,7 +318,7 @@ class DataFetcher:
                 else:
                     return True
             logging.error(
-                f"Login failed, maybe caused by Sliding CAPTCHA recognition failed"
+                "Login failed, maybe caused by Sliding CAPTCHA recognition failed"
             )
         return False
 
@@ -361,7 +359,7 @@ class DataFetcher:
 
         logging.info(f"Login successfully on {LOGIN_URL}")
         time.sleep(self.RETRY_WAIT_TIME_OFFSET_UNIT)
-        logging.info(f"Try to get the userid list")
+        logging.info("Try to get the userid list")
         user_id_list = self._get_user_ids(driver)
         logging.info(
             f"Here are a total of {len(user_id_list)} userids, which are {user_id_list} among which {self.IGNORE_USER_ID} will be ignored."
@@ -429,7 +427,7 @@ class DataFetcher:
             self._click_button(
                 driver,
                 By.XPATH,
-                f"""//*[@id="app"]/div/div[2]/div/div/div/div[2]/div[2]/div/button""",
+                """//*[@id="app"]/div/div[2]/div/div/div/div[2]/div[2]/div/button""",
             )
         time.sleep(self.RETRY_WAIT_TIME_OFFSET_UNIT)
         self._click_button(driver, By.CLASS_NAME, "el-input__suffix")
@@ -546,7 +544,7 @@ class DataFetcher:
             # click roll down button for user id
             self._click_button(driver, By.XPATH, "//div[@class='el-dropdown']/span")
             logging.debug(
-                f"""self._click_button(driver, By.XPATH, "//div[@class='el-dropdown']/span")"""
+                """self._click_button(driver, By.XPATH, "//div[@class='el-dropdown']/span")"""
             )
             time.sleep(self.RETRY_WAIT_TIME_OFFSET_UNIT)
             # wait for roll down menu displayed
@@ -554,7 +552,7 @@ class DataFetcher:
                 By.CLASS_NAME, "el-dropdown-menu.el-popper"
             ).find_element(By.TAG_NAME, "li")
             logging.debug(
-                f"""target = driver.find_element(By.CLASS_NAME, "el-dropdown-menu.el-popper").find_element(By.TAG_NAME, "li")"""
+                """target = driver.find_element(By.CLASS_NAME, "el-dropdown-menu.el-popper").find_element(By.TAG_NAME, "li")"""
             )
             time.sleep(self.RETRY_WAIT_TIME_OFFSET_UNIT)
             WebDriverWait(driver, self.DRIVER_IMPLICITY_WAIT_TIME).until(
@@ -562,7 +560,7 @@ class DataFetcher:
             )
             time.sleep(self.RETRY_WAIT_TIME_OFFSET_UNIT)
             logging.debug(
-                f"""WebDriverWait(driver, self.DRIVER_IMPLICITY_WAIT_TIME).until(EC.visibility_of(target))"""
+                """WebDriverWait(driver, self.DRIVER_IMPLICITY_WAIT_TIME).until(EC.visibility_of(target))"""
             )
             WebDriverWait(driver, self.DRIVER_IMPLICITY_WAIT_TIME).until(
                 EC.text_to_be_present_in_element(
@@ -797,10 +795,10 @@ class DataFetcher:
             dic = {"name": "balance", "value": f"{balance}"}
             self.insert_expand_data(dic)
             # 写入最近一次更新时间
-            dic = {"name": f"daily_date", "value": f"{last_daily_date}"}
+            dic = {"name": "daily_date", "value": f"{last_daily_date}"}
             self.insert_expand_data(dic)
             # 写入最近一次更新时间用电量
-            dic = {"name": f"daily_usage", "value": f"{last_daily_usage}"}
+            dic = {"name": "daily_usage", "value": f"{last_daily_usage}"}
             self.insert_expand_data(dic)
 
             # 写入年用电量
@@ -849,10 +847,10 @@ class DataFetcher:
             else:
                 month_usage = None
             # 写入本月电量
-            dic = {"name": f"month_usage", "value": f"{month_usage}"}
+            dic = {"name": "month_usage", "value": f"{month_usage}"}
             self.insert_expand_data(dic)
             # 写入本月电费
-            dic = {"name": f"month_charge", "value": f"{month_charge}"}
+            dic = {"name": "month_charge", "value": f"{month_charge}"}
             self.insert_expand_data(dic)
             # dic = {'date': month[index], 'usage': float(month_usage[index]), 'charge': float(month_charge[index])}
             self.connect.close()

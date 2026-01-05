@@ -60,7 +60,7 @@ def main():
             ).lower()
             os.environ["BALANCE"] = str(options.get("BALANCE", 5.0))
             os.environ["PUSHPLUS_TOKEN"] = options.get("PUSHPLUS_TOKEN", "")
-            logging.info(f"当前以Homeassistant Add-on 形式运行.")
+            logging.info("当前以Homeassistant Add-on 形式运行.")
         except Exception as e:
             logging.error(
                 f"Failing to read the options.json file, the program will exit with an error message: {e}."
@@ -77,7 +77,7 @@ def main():
             RETRY_TIMES_LIMIT = int(os.getenv("RETRY_TIMES_LIMIT", 5))
 
             logger_init(LOG_LEVEL)
-            logging.info(f"The current run runs as a docker image.")
+            logging.info("The current run runs as a docker image.")
         except Exception as e:
             logging.error(
                 f"Failing to read the .env file, the program will exit with an error message: {e}."
@@ -90,9 +90,9 @@ def main():
     current_datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     logging.info(f"The current date is {current_datetime}.")
 
-    logging.info(f"start init ErrorWatcher")
+    logging.info("start init ErrorWatcher")
     ErrorWatcher.init(root_dir="/data/errors")
-    logging.info(f"ErrorWatcher init done!")
+    logging.info("ErrorWatcher init done!")
     fetcher = DataFetcher(PHONE_NUMBER, PASSWORD)
 
     # 生成随机延迟时间（-10分钟到+10分钟）
