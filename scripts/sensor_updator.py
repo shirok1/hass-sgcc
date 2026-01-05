@@ -3,7 +3,15 @@ import os
 from datetime import datetime, timedelta
 
 import requests
-from const import *
+from const import (
+    API_PATH,
+    BALANCE_SENSOR_NAME,
+    DAILY_USAGE_SENSOR_NAME,
+    MONTH_CHARGE_SENSOR_NAME,
+    MONTH_USAGE_SENSOR_NAME,
+    YEARLY_CHARGE_SENSOR_NAME,
+    YEARLY_USAGE_SENSOR_NAME,
+)
 
 
 class SensorUpdator:

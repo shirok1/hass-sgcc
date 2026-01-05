@@ -12,7 +12,7 @@ from datetime import datetime
 from io import BytesIO
 
 import numpy as np
-from const import *
+from const import BALANCE_URL, ELECTRIC_USAGE_URL, LOGIN_URL
 from error_watcher import ErrorWatcher
 from onnx import ONNX
 from PIL import Image
