@@ -55,4 +55,4 @@ USER nonroot
 # Use `/app` as the working directory
 WORKDIR /app
 
-CMD ["python3", "-m", "hass_sgcc.main"]
+CMD ["python3", "-m", "hass_sgcc"]

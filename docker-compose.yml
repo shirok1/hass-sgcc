@@ -11,5 +11,5 @@ services:
     restart: unless-stopped
     volumes:
       - ./:/data        # if you want to read homeassistant.db, homeassistant.db is in the container at /data/
-    command: python3 -m hass_sgcc.main
+    command: python3 -m hass_sgcc
     init: true

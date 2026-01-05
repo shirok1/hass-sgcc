@@ -9,7 +9,7 @@
             "type": "debugpy",
             "request": "launch",
             // "program": "${file}",
-            "module": "hass_sgcc.main",
+            "module": "hass_sgcc",
             "console": "integratedTerminal",
             "cwd": "${workspaceFolder}"
         }
