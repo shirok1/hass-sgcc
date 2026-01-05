@@ -1,7 +1,7 @@
 # import cv2
-from PIL import ImageDraw, Image, ImageOps
 import numpy as np
 import onnxruntime
+from PIL import Image, ImageDraw, ImageOps
 
 anchors = [
     [(116, 90), (156, 198), (373, 326)],

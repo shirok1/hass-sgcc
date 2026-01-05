@@ -2,9 +2,9 @@
 This script provides a wrapper to save screenshots of errors.
 """
 
-import os
-import logging
 import functools
+import logging
+import os
 from datetime import datetime
 from typing import Callable, Optional
 

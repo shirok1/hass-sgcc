@@ -3,9 +3,8 @@ import os
 from datetime import datetime, timedelta
 
 import requests
-from sympy import true
-
 from const import *
+from sympy import true
 
 
 class SensorUpdator:

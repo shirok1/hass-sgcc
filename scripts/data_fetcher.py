@@ -1,34 +1,32 @@
+import base64
 import logging
 import os
+import platform
+import random
 import re
+import sqlite3
 import subprocess
 import time
-
-import random
-import base64
-import sqlite3
 from datetime import datetime
-from selenium import webdriver
-from selenium.webdriver import ActionChains
-from selenium.webdriver.edge.service import Service as EdgeService
-from webdriver_manager.microsoft import EdgeChromiumDriverManager
-from selenium.webdriver.firefox.service import Service as FirefoxService
-from webdriver_manager.firefox import GeckoDriverManager
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.wait import WebDriverWait
-from sensor_updator import SensorUpdator
-from error_watcher import ErrorWatcher
-
-from const import *
-
-import numpy as np
 
 # import cv2
 from io import BytesIO
-from PIL import Image
+
+import numpy as np
+from const import *
+from error_watcher import ErrorWatcher
 from onnx import ONNX
-import platform
+from PIL import Image
+from selenium import webdriver
+from selenium.webdriver import ActionChains
+from selenium.webdriver.common.by import By
+from selenium.webdriver.edge.service import Service as EdgeService
+from selenium.webdriver.firefox.service import Service as FirefoxService
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.wait import WebDriverWait
+from sensor_updator import SensorUpdator
+from webdriver_manager.firefox import GeckoDriverManager
+from webdriver_manager.microsoft import EdgeChromiumDriverManager
 
 
 def base64_to_PLI(base64_str: str):

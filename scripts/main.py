@@ -1,15 +1,16 @@
+import json
 import logging
 import logging.config
 import os
+import random
 import sys
 import time
-import schedule
-import json
-import random
-from error_watcher import ErrorWatcher
 from datetime import datetime, timedelta
+
+import schedule
 from const import *
 from data_fetcher import DataFetcher
+from error_watcher import ErrorWatcher
 
 
 def main():
