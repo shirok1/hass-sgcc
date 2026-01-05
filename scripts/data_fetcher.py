@@ -227,7 +227,7 @@ class DataFetcher:
             WebDriverWait(driver, self.DRIVER_IMPLICITY_WAIT_TIME).until(
                 EC.visibility_of_element_located((By.CLASS_NAME, "user"))
             )
-        except:
+        except Exception:
             logging.debug(f"Login failed, open URL: {LOGIN_URL} failed.")
         logging.info(f"Open LOGIN_URL:{LOGIN_URL}.\r")
         time.sleep(self.RETRY_WAIT_TIME_OFFSET_UNIT * 2)
@@ -311,7 +311,7 @@ class DataFetcher:
                         )
                         time.sleep(self.RETRY_WAIT_TIME_OFFSET_UNIT * 2)
                         continue
-                    except:
+                    except Exception:
                         logging.debug(
                             f"Login failed, maybe caused by invalid captcha, {self.RETRY_TIMES_LIMIT - retry_times} retry times left."
                         )
@@ -591,7 +591,7 @@ class DataFetcher:
                 return -float(balance)
             else:
                 return float(balance)
-        except:
+        except Exception:
             return None
 
     def _get_yearly_data(self, driver):
