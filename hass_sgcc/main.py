@@ -8,8 +8,8 @@ import time
 from datetime import datetime, timedelta
 
 import schedule
-from data_fetcher import DataFetcher
-from error_watcher import ErrorWatcher
+from .data_fetcher import DataFetcher
+from .error_watcher import ErrorWatcher
 
 
 def main():
@@ -19,8 +19,13 @@ def main():
         import dotenv
 
         dotenv.load_dotenv(verbose=True)
-    if os.path.isfile("/data/options.json"):
-        with open("/data/options.json") as f:
+    options_path = (
+        "/data/options.json"
+        if os.path.isfile("/data/options.json")
+        else "data/options.json"
+    )
+    if os.path.isfile(options_path):
+        with open(options_path) as f:
             options = json.load(f)
         try:
             PHONE_NUMBER = options.get("PHONE_NUMBER")
@@ -90,7 +95,7 @@ def main():
     logging.info(f"The current date is {current_datetime}.")
 
     logging.info("start init ErrorWatcher")
-    ErrorWatcher.init(root_dir="/data/errors")
+    ErrorWatcher.init(root_dir="data/errors")
     logging.info("ErrorWatcher init done!")
     fetcher = DataFetcher(PHONE_NUMBER, PASSWORD)
 

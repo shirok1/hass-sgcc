@@ -45,7 +45,7 @@ COPY --from=builder --chown=nonroot:nonroot /app /app
 # Place executables in the environment at the front of the path
 ENV PATH="/app/.venv/bin:$PATH"
 
-RUN OUTPUT=$(python3 /app/scripts/firefox_driver_download.py)  \
+RUN OUTPUT=$(python3 /app/hass_sgcc/firefox_driver_download.py)  \
     && echo $OUTPUT  \
     && mv $OUTPUT /usr/bin/geckodriver
 
@@ -55,4 +55,4 @@ USER nonroot
 # Use `/app` as the working directory
 WORKDIR /app
 
-CMD ["python3","/app/scripts/main.py"]
+CMD ["python3", "-m", "hass_sgcc.main"]
