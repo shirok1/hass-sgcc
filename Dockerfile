@@ -26,7 +26,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked
 
 # Then, use a final image without uv
-FROM debian:bookworm-slim
+FROM debian:bookworm-slim AS final
 
 RUN apt-get -y update \
  && apt-get install --no-install-recommends -y firefox-esr \
