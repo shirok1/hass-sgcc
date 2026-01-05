@@ -131,7 +131,7 @@ class ONNX:
             feature_map[..., 4] > confidence_threshold
         )  # 0 1 2 3 4 4是置信度，只要置信度 > conf_thres 的
         box = feature_map[
-            conf == True
+            conf
         ]  # 根据objectness score生成(n, 5+class_nm)，只留下符合要求的框
 
         # -------------------------------------------------------
