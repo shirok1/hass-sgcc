@@ -8,7 +8,6 @@ import time
 from datetime import datetime, timedelta
 
 import schedule
-from const import *
 from data_fetcher import DataFetcher
 from error_watcher import ErrorWatcher
 
