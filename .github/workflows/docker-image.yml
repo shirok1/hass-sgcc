@@ -51,7 +51,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_BASENAME }}-${{ matrix.context }}
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_BASENAME }}
 
       - name: Generate git describe
         id: git-describe
@@ -73,4 +73,4 @@ jobs:
       - name: Inspect image
         run: |
           docker buildx imagetools inspect \
-          ${{ env.REGISTRY }}/${{ env.IMAGE_BASENAME }}-${{ matrix.context }}:${{ steps.meta.outputs.version }}
+          ${{ env.REGISTRY }}/${{ env.IMAGE_BASENAME }}:${{ steps.meta.outputs.version }}
