@@ -167,7 +167,7 @@ requires-dist = [
     { name = "schedule", specifier = "==1.2.1" },
     { name = "selenium", specifier = "==4.34.2" },
     { name = "webdriver-manager", specifier = "==4.0.2" },
-    { name = "webdrivermanager-cn", specifier = "==2.4.0" },
+    { name = "webdrivermanager-cn", specifier = "==2.4.2" },
 ]
 
 [package.metadata.requires-dev]
@@ -495,7 +495,7 @@ wheels = [
 
 [[package]]
 name = "webdrivermanager-cn"
-version = "2.4.0"
+version = "2.4.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "filelock" },
@@ -503,7 +503,7 @@ dependencies = [
     { name = "requests" },
 ]
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/d5/92/59009846ded1dda1ff759baa634983f9bca9fe138fe18acccdccbfec056c/webdrivermanager_cn-2.4.0-py3-none-any.whl", hash = "sha256:1dd3cb52d873e567e8bc77f394ca2d0b6758b31b01cb7f049f0863346f907943", size = 25410, upload-time = "2025-04-07T08:48:13.705Z" },
+    { url = "https://files.pythonhosted.org/packages/13/45/153ac92ab1ed32447faa8091832d1303c037a18c53c62cb2fd21a469049c/webdrivermanager_cn-2.4.2-py3-none-any.whl", hash = "sha256:fe2b05976e50cf3cca01a7d1623ece52691738fc6e9345aa29c1417c0b335c27", size = 25548, upload-time = "2025-10-11T08:41:09.581Z" },
 ]
 
 [[package]]
