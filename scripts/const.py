@@ -7,7 +7,7 @@ BALANCE_URL = "https://95598.cn/osgweb/userAcc"
 
 # Home Assistant
 SUPERVISOR_URL = "http://supervisor/core"
-API_PATH = "/api/states/" # https://developers.home-assistant.io/docs/api/rest/
+API_PATH = "/api/states/"  # https://developers.home-assistant.io/docs/api/rest/
 
 BALANCE_SENSOR_NAME = "sensor.electricity_charge_balance"
 DAILY_USAGE_SENSOR_NAME = "sensor.last_electricity_usage"
@@ -17,4 +17,3 @@ MONTH_USAGE_SENSOR_NAME = "sensor.month_electricity_usage"
 MONTH_CHARGE_SENSOR_NAME = "sensor.month_electricity_charge"
 BALANCE_UNIT = "CNY"
 USAGE_UNIT = "KWH"
-

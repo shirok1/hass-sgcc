@@ -1,6 +1,6 @@
 import logging
 import os
-from datetime import datetime,timedelta
+from datetime import datetime, timedelta
 
 import requests
 from sympy import true
@@ -9,7 +9,6 @@ from const import *
 
 
 class SensorUpdator:
-
     def __init__(self):
         HASS_URL = os.getenv("HASS_URL")
         HASS_TOKEN = os.getenv("HASS_TOKEN")
@@ -17,7 +16,17 @@ class SensorUpdator:
         self.token = HASS_TOKEN
         self.RECHARGE_NOTIFY = os.getenv("RECHARGE_NOTIFY", "false").lower() == "true"
 
-    def update_one_userid(self, user_id: str, balance: float, last_daily_date: str, last_daily_usage: float, yearly_charge: float, yearly_usage: float, month_charge: float, month_usage: float):
+    def update_one_userid(
+        self,
+        user_id: str,
+        balance: float,
+        last_daily_date: str,
+        last_daily_usage: float,
+        yearly_charge: float,
+        yearly_usage: float,
+        month_charge: float,
+        month_usage: float,
+    ):
         postfix = f"_{user_id[-4:]}"
         if balance is not None:
             self.balance_notify(user_id, balance)
@@ -35,7 +44,9 @@ class SensorUpdator:
 
         logging.info(f"User {user_id} state-refresh task run successfully!")
 
-    def update_last_daily_usage(self, postfix: str, last_daily_date: str, sensorState: float):
+    def update_last_daily_usage(
+        self, postfix: str, last_daily_date: str, sensorState: float
+    ):
         sensorName = DAILY_USAGE_SENSOR_NAME + postfix
         request_body = {
             "state": sensorState,
@@ -50,7 +61,9 @@ class SensorUpdator:
         }
 
         self.send_url(sensorName, request_body)
-        logging.info(f"Homeassistant sensor {sensorName} state updated: {sensorState} kWh")
+        logging.info(
+            f"Homeassistant sensor {sensorName} state updated: {sensorState} kWh"
+        )
 
     def update_balance(self, postfix: str, sensorState: float):
         sensorName = BALANCE_SENSOR_NAME + postfix
@@ -68,7 +81,9 @@ class SensorUpdator:
         }
 
         self.send_url(sensorName, request_body)
-        logging.info(f"Homeassistant sensor {sensorName} state updated: {sensorState} CNY")
+        logging.info(
+            f"Homeassistant sensor {sensorName} state updated: {sensorState} CNY"
+        )
 
     def update_month_data(self, postfix: str, sensorState: float, usage=False):
         sensorName = (
@@ -93,7 +108,9 @@ class SensorUpdator:
         }
 
         self.send_url(sensorName, request_body)
-        logging.info(f"Homeassistant sensor {sensorName} state updated: {sensorState} {'kWh' if usage else 'CNY'}")
+        logging.info(
+            f"Homeassistant sensor {sensorName} state updated: {sensorState} {'kWh' if usage else 'CNY'}"
+        )
 
     def update_yearly_data(self, postfix: str, sensorState: float, usage=False):
         sensorName = (
@@ -102,7 +119,7 @@ class SensorUpdator:
             else YEARLY_CHARGE_SENSOR_NAME + postfix
         )
         if datetime.now().month == 1:
-            last_year = datetime.now().year -1 
+            last_year = datetime.now().year - 1
             last_reset = datetime.now().replace(year=last_year).strftime("%Y")
         else:
             last_reset = datetime.now().strftime("%Y")
@@ -118,7 +135,9 @@ class SensorUpdator:
             },
         }
         self.send_url(sensorName, request_body)
-        logging.info(f"Homeassistant sensor {sensorName} state updated: {sensorState} {'kWh' if usage else 'CNY'}")
+        logging.info(
+            f"Homeassistant sensor {sensorName} state updated: {sensorState} {'kWh' if usage else 'CNY'}"
+        )
 
     def send_url(self, sensorName, request_body):
         headers = {
@@ -135,22 +154,32 @@ class SensorUpdator:
             logging.error(f"Homeassistant REST API invoke failed, reason is {e}")
 
     def balance_notify(self, user_id, balance):
-
-        if self.RECHARGE_NOTIFY :
+        if self.RECHARGE_NOTIFY:
             BALANCE = float(os.getenv("BALANCE", 10.0))
-            PUSHPLUS_TOKEN = os.getenv("PUSHPLUS_TOKEN").split(",")        
-            logging.info(f"Check the electricity bill balance. When the balance is less than {BALANCE} CNY, the notification will be sent = {self.RECHARGE_NOTIFY}")
-            if balance < BALANCE :
+            PUSHPLUS_TOKEN = os.getenv("PUSHPLUS_TOKEN").split(",")
+            logging.info(
+                f"Check the electricity bill balance. When the balance is less than {BALANCE} CNY, the notification will be sent = {self.RECHARGE_NOTIFY}"
+            )
+            if balance < BALANCE:
                 for token in PUSHPLUS_TOKEN:
                     title = "电费余额不足提醒"
-                    content = (f"您用户号{user_id}的当前电费余额为：{balance}元，请及时充值。" )
-                    url = ("http://www.pushplus.plus/send?token="+ token+ "&title="+ title+ "&content="+ content)
+                    content = (
+                        f"您用户号{user_id}的当前电费余额为：{balance}元，请及时充值。"
+                    )
+                    url = (
+                        "http://www.pushplus.plus/send?token="
+                        + token
+                        + "&title="
+                        + title
+                        + "&content="
+                        + content
+                    )
                     requests.get(url)
                     logging.info(
                         f"The current balance of user id {user_id} is {balance} CNY less than {BALANCE} CNY, notice has been sent, please pay attention to check and recharge."
                     )
-        else :
+        else:
             logging.info(
-            f"Check the electricity bill balance, the notification will be sent = {self.RECHARGE_NOTIFY}")
+                f"Check the electricity bill balance, the notification will be sent = {self.RECHARGE_NOTIFY}"
+            )
             return
-
