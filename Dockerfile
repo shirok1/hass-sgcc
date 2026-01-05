@@ -33,8 +33,8 @@ RUN apt-get -y update \
  && rm -rf /var/lib/apt/lists/*
 
 # Setup a non-root user
-RUN groupadd --system --gid 999 nonroot \
- && useradd --system --gid 999 --uid 999 --create-home nonroot
+RUN groupadd --system --gid 900 nonroot \
+ && useradd --system --gid 900 --uid 900 --create-home nonroot
 
 # Copy the Python version
 COPY --from=builder --chown=python:python /python /python
