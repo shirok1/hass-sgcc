@@ -2,7 +2,7 @@ import logging
 import os
 from datetime import datetime, timedelta
 
-import requests
+import httpx
 
 from .const import (
     API_PATH,
@@ -148,12 +148,11 @@ class SensorUpdator:
 
     def send_url(self, sensorName, request_body):
         headers = {
-            "Content-Type": "application-json",
             "Authorization": "Bearer " + self.token,
         }
         url = self.base_url + API_PATH + sensorName  # /api/states/<entity_id>
         try:
-            response = requests.post(url, json=request_body, headers=headers)
+            response = httpx.post(url, json=request_body, headers=headers)
             logging.debug(
                 f"Homeassistant REST API invoke, POST on {url}. response[{response.status_code}]: {response.content}"
             )
@@ -173,15 +172,10 @@ class SensorUpdator:
                     content = (
                         f"您用户号{user_id}的当前电费余额为：{balance}元，请及时充值。"
                     )
-                    url = (
-                        "http://www.pushplus.plus/send?token="
-                        + token
-                        + "&title="
-                        + title
-                        + "&content="
-                        + content
+                    url = "http://www.pushplus.plus/send"
+                    httpx.get(
+                        url, params={"token": token, "title": title, "content": content}
                     )
-                    requests.get(url)
                     logging.info(
                         f"The current balance of user id {user_id} is {balance} CNY less than {BALANCE} CNY, notice has been sent, please pay attention to check and recharge."
                     )
