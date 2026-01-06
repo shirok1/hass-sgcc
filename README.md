@@ -50,7 +50,7 @@
 
 ## 实现流程
 
-通过python的selenium包获取国家电网的数据，通过homeassistant的提供的[REST API](https://developers.home-assistant.io/docs/api/rest/)将采用POST请求将实体状态更新到homeassistant。
+通过python的playwright包获取国家电网的数据，通过homeassistant的提供的[REST API](https://developers.home-assistant.io/docs/api/rest/)将采用POST请求将实体状态更新到homeassistant。
 
 国家电网添加了滑动验证码登录验证，我这边最早采取了调用商业API的方式，现在已经更新成了离线方案。利用Yolov3神经网络识别验证码，请大家放心使用。
 
@@ -108,7 +108,7 @@ HASS_URL="http://localhost:8123/"
 # homeassistant的长期令牌
 HASS_TOKEN="eyxxxxx"
 
-## selenium运行参数
+## 运行参数
 # 任务开始时间，24小时制，例如"07:00”则为每天早上7点执行，第一次启动程序如果时间晚于早上7点则会立即执行一次，每隔12小时执行一次。
 JOB_START_TIME="07:00"
 # 每次操作等待时间，推荐设定范围为[2,30]，该值表示每次点击网页后所要等待数据加载的时间，如果出现“no such element”诸如此类的错误可适当调大该值，如果硬件性能较好可以适当调小该值
@@ -146,7 +146,7 @@ docker-compose logs sgcc_electricity_app
 2024-06-06 16:00:43  [INFO    ] ---- enable_database_storage为false，不会储存到数据库
 2024-06-06 16:00:43  [INFO    ] ---- 当前登录的用户名为: xxxxxx，homeassistant地址为http://192.168.1.xx:8123/,程序将在每天00:00执行
 2024-06-06 16:00:43  [INFO    ] ---- 此次为首次运行，等待时间(FIRST_SLEEP_TIME)为10秒，可在.env中设置
-2024-06-06 16:00:59  [INFO    ] ---- Webdriver initialized.
+2024-06-06 16:00:59  [INFO    ] ---- Playwright initialized.
 2024-06-06 16:01:20  [INFO    ] ---- Click login button.
 2024-06-06 16:01:20  [INFO    ] ---- Get electricity canvas image successfully.
 2024-06-06 16:01:20  [INFO    ] ---- Image CaptCHA distance is xxx.

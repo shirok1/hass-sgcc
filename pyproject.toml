@@ -9,9 +9,8 @@ dependencies = [
     "numpy>=1.26.2,<2.0",
     "onnxruntime>=1.18.1,<2.0",
     "pillow>=10.1.0,<12.0",
+    "playwright>=1.57.0",
     "schedule>=1.2.1,<2.0",
-    "selenium>=4.34.2,<5.0",
-    "webdrivermanager-cn>=2.4.0,<3.0",
 ]
 
 [dependency-groups]

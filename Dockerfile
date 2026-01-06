@@ -28,14 +28,14 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 # Then, use a final image without uv
 FROM debian:bookworm-slim AS final
 
-RUN apt-get -y update \
- && apt-get install --no-install-recommends -y firefox-esr \
- && rm -rf /var/lib/apt/lists/*
+# Install Playwright dependencies
+# We use playwright install-deps but it needs the playwright cli.
+# Since we don't have python/uv in the base image before copying, we can't easily run it.
+# However, we can use the builder to generate a list or just install the known deps for chromium.
+# Or we can install python/uv first, then install deps.
+# Actually, the standard way is to use `playwright install --with-deps` but that needs root.
 
-# Setup a non-root user
-RUN groupadd --system --gid 900 nonroot \
- && useradd --system --gid 900 --uid 900 --create-home nonroot
-
+# Let's copy python env first so we can use playwright cli.
 # Copy the Python version
 COPY --from=builder --chown=python:python /python /python
 
@@ -45,9 +45,47 @@ COPY --from=builder --chown=nonroot:nonroot /app /app
 # Place executables in the environment at the front of the path
 ENV PATH="/app/.venv/bin:$PATH"
 
-RUN OUTPUT=$(python3 /app/hass_sgcc/firefox_driver_download.py)  \
-    && echo $OUTPUT  \
-    && mv $OUTPUT /usr/bin/geckodriver
+# Install Playwright browsers and dependencies
+# This needs to be done as root
+ENV PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    ca-certificates \
+    # Install dependencies for chromium
+    libglib2.0-0 \
+    libnss3 \
+    libnspr4 \
+    libatk1.0-0 \
+    libatk-bridge2.0-0 \
+    libcups2 \
+    libdrm2 \
+    libdbus-1-3 \
+    libxcb1 \
+    libxkbcommon0 \
+    libx11-6 \
+    libxcomposite1 \
+    libxdamage1 \
+    libxext6 \
+    libxfixes3 \
+    libxrandr2 \
+    libgbm1 \
+    libpango-1.0-0 \
+    libcairo2 \
+    libasound2 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Run playwright install to get the browser binaries
+RUN playwright install chromium
+# If dependencies are missing, 'playwright install --with-deps' would be better but it might try to install sudo.
+# Since we are root, we can try 'playwright install-deps chromium' if the above manual list is insufficient.
+RUN playwright install-deps chromium
+
+# Setup a non-root user
+RUN groupadd --system --gid 900 nonroot \
+ && useradd --system --gid 900 --uid 900 --create-home nonroot
+
+# Ensure nonroot can access the browsers
+RUN chown -R nonroot:nonroot /ms-playwright
 
 # Use the non-root user to run our application
 USER nonroot

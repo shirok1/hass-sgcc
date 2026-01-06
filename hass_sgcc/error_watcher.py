@@ -61,7 +61,7 @@ class ErrorWatcher:
 
     def set_driver(self, driver):
         """
-        Set the driver for taking screenshots.
+        Set the driver (page) for taking screenshots.
         """
         self.driver = driver
 
@@ -107,7 +107,7 @@ class ErrorWatcher:
         """
         driver = options.get("driver", self.driver)
         if not driver:
-            logging.error("No driver set for taking screenshots.")
+            logging.error("No driver (page) set for taking screenshots.")
             return
 
         error_message = str(error)
@@ -115,7 +115,8 @@ class ErrorWatcher:
         screenshot_path = os.path.join(self.screenshot_dir, f"error_{timestamp}.png")
 
         try:
-            self.driver.save_screenshot(screenshot_path)
+            # Playwright uses screenshot(path=...)
+            driver.screenshot(path=screenshot_path)
             logging.error(
                 f"Error occurred: {error_message}. Screenshot saved to {screenshot_path}"
             )
