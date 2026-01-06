@@ -12,9 +12,6 @@ from datetime import datetime
 from io import BytesIO
 
 import numpy as np
-from const import BALANCE_URL, ELECTRIC_USAGE_URL, LOGIN_URL
-from error_watcher import ErrorWatcher
-from onnx import ONNX
 from PIL import Image
 from selenium import webdriver
 from selenium.webdriver import ActionChains
@@ -23,8 +20,12 @@ from selenium.webdriver.edge.service import Service as EdgeService
 from selenium.webdriver.firefox.service import Service as FirefoxService
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
-from sensor_updator import SensorUpdator
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
+
+from .const import BALANCE_URL, ELECTRIC_USAGE_URL, LOGIN_URL
+from .error_watcher import ErrorWatcher
+from .onnx import ONNX
+from .sensor_updator import SensorUpdator
 
 
 def base64_to_PLI(base64_str: str):
@@ -91,7 +92,7 @@ class DataFetcher:
             dotenv.load_dotenv(verbose=True)
         self._username = username
         self._password = password
-        self.onnx = ONNX("./captcha.onnx")
+        self.onnx = ONNX(os.path.join(os.path.dirname(__file__), "captcha.onnx"))
 
         # 获取 ENABLE_DATABASE_STORAGE 的值，默认为 False
         self.enable_database_storage = (
@@ -150,7 +151,10 @@ class DataFetcher:
             # 创建数据库
             DB_NAME = os.getenv("DB_NAME", "homeassistant.db")
             if "PYTHON_IN_DOCKER" in os.environ:
-                DB_NAME = "/data/" + DB_NAME
+                if os.path.exists("/data"):
+                    DB_NAME = "/data/" + DB_NAME
+                else:
+                    DB_NAME = "data/" + DB_NAME
             self.connect = sqlite3.connect(DB_NAME)
             self.connect.cursor()
             logging.info(f"Database of {DB_NAME} created successfully.")
