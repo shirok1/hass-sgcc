@@ -201,7 +201,9 @@ class DataFetcher:
         page.click('xpath=//*[@id="login_box"]/div[1]/div[1]/div[2]/span')
         time.sleep(self.RETRY_WAIT_TIME_OFFSET_UNIT)
         # click agree button
-        page.click('xpath=//*[@id="login_box"]/div[2]/div[1]/form/div[1]/div[3]/div/span[2]')
+        page.click(
+            'xpath=//*[@id="login_box"]/div[2]/div[1]/form/div[1]/div[3]/div/span[2]'
+        )
         logging.info("Click the Agree option.\r")
         time.sleep(self.RETRY_WAIT_TIME_OFFSET_UNIT)
         if phone_code:
@@ -209,12 +211,16 @@ class DataFetcher:
             input_elements = page.locator(".el-input__inner")
             input_elements.nth(2).fill(self._username)
             logging.info(f"input_elements username : {self._username}\r")
-            page.click('xpath=//*[@id="login_box"]/div[2]/div[2]/form/div[1]/div[2]/div[2]/div/a')
+            page.click(
+                'xpath=//*[@id="login_box"]/div[2]/div[2]/form/div[1]/div[2]/div[2]/div/a'
+            )
             code = input("Input your phone verification code: ")
             input_elements.nth(3).fill(code)
             logging.info(f"input_elements verification code: {code}.\r")
             # click login button
-            page.click('xpath=//*[@id="login_box"]/div[2]/div[2]/form/div[2]/div/button/span')
+            page.click(
+                'xpath=//*[@id="login_box"]/div[2]/div[2]/form/div[2]/div/button/span'
+            )
             time.sleep(self.RETRY_WAIT_TIME_OFFSET_UNIT * 2)
             logging.info("Click login button.\r")
 
@@ -274,8 +280,11 @@ class DataFetcher:
         """main logic here"""
         with sync_playwright() as p:
             # Launch browser
-            browser = p.chromium.launch(headless=True, args=['--no-sandbox', '--disable-gpu', '--disable-dev-shm-usage'])
-            context = browser.new_context(viewport={'width': 1920, 'height': 1080})
+            browser = p.chromium.launch(
+                headless=True,
+                args=["--no-sandbox", "--disable-gpu", "--disable-dev-shm-usage"],
+            )
+            context = browser.new_context(viewport={"width": 1920, "height": 1080})
             page = context.new_page()
 
             ErrorWatcher.instance().set_driver(page)
@@ -371,11 +380,15 @@ class DataFetcher:
     def _choose_current_userid(self, page, userid_index):
         elements = page.locator(".button_confirm").all()
         if elements:
-            page.click("""xpath=//*[@id="app"]/div/div[2]/div/div/div/div[2]/div[2]/div/button""")
+            page.click(
+                """xpath=//*[@id="app"]/div/div[2]/div/div/div/div[2]/div[2]/div/button"""
+            )
         time.sleep(self.RETRY_WAIT_TIME_OFFSET_UNIT)
         page.click(".el-input__suffix")
         time.sleep(self.RETRY_WAIT_TIME_OFFSET_UNIT)
-        page.click(f"xpath=/html/body/div[2]/div[1]/div[1]/ul/li[{userid_index + 1}]/span")
+        page.click(
+            f"xpath=/html/body/div[2]/div[1]/div[1]/ul/li[{userid_index + 1}]/span"
+        )
 
     def _get_all_data(self, page, user_id, userid_index):
         balance = self._get_electric_balance(page)
@@ -480,9 +493,7 @@ class DataFetcher:
             page.wait_for_selector(".el-dropdown")
             # click roll down button for user id
             page.click("xpath=//div[@class='el-dropdown']/span")
-            logging.debug(
-                """page.click("xpath=//div[@class='el-dropdown']/span")"""
-            )
+            logging.debug("""page.click("xpath=//div[@class='el-dropdown']/span")""")
             time.sleep(self.RETRY_WAIT_TIME_OFFSET_UNIT)
             # wait for roll down menu displayed
             target = page.locator(".el-dropdown-menu.el-popper").locator("li").first
@@ -492,15 +503,15 @@ class DataFetcher:
             time.sleep(self.RETRY_WAIT_TIME_OFFSET_UNIT)
             target.wait_for(state="visible")
             time.sleep(self.RETRY_WAIT_TIME_OFFSET_UNIT)
-            logging.debug(
-                """target.wait_for(state="visible")"""
-            )
+            logging.debug("""target.wait_for(state="visible")""")
             # Wait for text ":"
             # WebDriverWait(driver, ...).until(EC.text_to_be_present_in_element(...))
             # In Playwright we can just wait.
 
             # get user id one by one
-            userid_elements = page.locator(".el-dropdown-menu.el-popper").locator("li").all()
+            userid_elements = (
+                page.locator(".el-dropdown-menu.el-popper").locator("li").all()
+            )
             userid_list = []
             for element in userid_elements:
                 userid_list.append(re.findall("[0-9]+", element.inner_text())[-1])
@@ -509,7 +520,7 @@ class DataFetcher:
             logging.error(
                 f"Browser quit abnormly, reason: {e}. get user_id list failed."
             )
-            page.close() # Actually we should probably raise so fetch closes browser.
+            page.close()  # Actually we should probably raise so fetch closes browser.
 
     def _get_electric_balance(self, page):
         try:
@@ -525,9 +536,13 @@ class DataFetcher:
     def _get_yearly_data(self, page):
         try:
             if datetime.now().month == 1:
-                page.click('xpath=//*[@id="pane-first"]/div[1]/div/div[1]/div/div/input')
+                page.click(
+                    'xpath=//*[@id="pane-first"]/div[1]/div/div[1]/div/div/input'
+                )
                 time.sleep(self.RETRY_WAIT_TIME_OFFSET_UNIT)
-                page.click(f"xpath=//span[contains(text(), '{datetime.now().year - 1}')]")
+                page.click(
+                    f"xpath=//span[contains(text(), '{datetime.now().year - 1}')]"
+                )
                 time.sleep(self.RETRY_WAIT_TIME_OFFSET_UNIT)
             page.click("xpath=//div[@class='el-tabs__nav is-top']/div[@id='tab-first']")
             time.sleep(self.RETRY_WAIT_TIME_OFFSET_UNIT)
@@ -539,13 +554,17 @@ class DataFetcher:
 
         # get data
         try:
-            yearly_usage = page.locator("xpath=//ul[@class='total']/li[1]/span").inner_text()
+            yearly_usage = page.locator(
+                "xpath=//ul[@class='total']/li[1]/span"
+            ).inner_text()
         except Exception as e:
             logging.error(f"The yearly_usage data get failed : {e}")
             yearly_usage = None
 
         try:
-            yearly_charge = page.locator("xpath=//ul[@class='total']/li[2]/span").inner_text()
+            yearly_charge = page.locator(
+                "xpath=//ul[@class='total']/li[2]/span"
+            ).inner_text()
         except Exception as e:
             logging.error(f"The yearly_charge data get failed : {e}")
             yearly_charge = None
@@ -556,7 +575,9 @@ class DataFetcher:
         """获取最近一次用电量"""
         try:
             # 点击日用电量
-            page.click("xpath=//div[@class='el-tabs__nav is-top']/div[@id='tab-second']")
+            page.click(
+                "xpath=//div[@class='el-tabs__nav is-top']/div[@id='tab-second']"
+            )
             time.sleep(self.RETRY_WAIT_TIME_OFFSET_UNIT)
             # wait for data displayed
             usage_element = page.locator(
@@ -581,9 +602,13 @@ class DataFetcher:
             page.click("xpath=//div[@class='el-tabs__nav is-top']/div[@id='tab-first']")
             time.sleep(self.RETRY_WAIT_TIME_OFFSET_UNIT)
             if datetime.now().month == 1:
-                page.click('xpath=//*[@id="pane-first"]/div[1]/div/div[1]/div/div/input')
+                page.click(
+                    'xpath=//*[@id="pane-first"]/div[1]/div/div[1]/div/div/input'
+                )
                 time.sleep(self.RETRY_WAIT_TIME_OFFSET_UNIT)
-                page.click(f"xpath=//span[contains(text(), '{datetime.now().year - 1}')]")
+                page.click(
+                    f"xpath=//span[contains(text(), '{datetime.now().year - 1}')]"
+                )
                 time.sleep(self.RETRY_WAIT_TIME_OFFSET_UNIT)
             # wait for month displayed
             page.locator(".total").wait_for(state="visible")
