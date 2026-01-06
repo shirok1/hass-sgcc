@@ -2,9 +2,9 @@
 
 # ⚡️国家电网电力获取
 
-[![Docker Image CI](https://github.com/ARC-MX/sgcc_electricity_new/actions/workflows/docker-image.yml/badge.svg)](https://github.com/ARC-MX/sgcc_electricity_new/actions/workflows/docker-image.yml)
-[![Image Size](https://img.shields.io/docker/image-size/arcw/sgcc_electricity)](https://hub.docker.com/r/arcw/sgcc_electricity)
-[![Docker Pull](https://img.shields.io/docker/pulls/arcw/sgcc_electricity?color=%2348BB78&logo=docker&label=pulls)](https://hub.docker.com/r/arcw/sgcc_electricity)
+[![Build Docker Image](https://github.com/shirok1/hass-sgcc/actions/workflows/docker-image.yml/badge.svg)](https://github.com/shirok1/hass-sgcc/actions/workflows/docker-image.yml)
+[![Image Size](https://ghcr-badge.egpl.dev/shirok1/hass-sgcc/size?tag=master)](https://github.com/shirok1/hass-sgcc/pkgs/container/hass-sgcc)
+[![Lint](https://github.com/shirok1/hass-sgcc/actions/workflows/lint.yml/badge.svg)](https://github.com/shirok1/hass-sgcc/actions/workflows/lint.yml)
 
 <p align="center">
 <img src="assets/image-20230730135540291.png" alt="mini-graph-card" width="400">
